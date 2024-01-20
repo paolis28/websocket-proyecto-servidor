@@ -1,0 +1,29 @@
+###
+POST http://localhost:3000/apiWebsocket/Usuario/crearUsuario HTTP/1.1
+Content-Type: application/json
+
+{
+    "nombre":"Paola",
+    "contrasena":123
+}
+
+###
+GET http://localhost:3000/apiWebsocket/Usuario/conseguirUsuarios HTTP/1.1
+Content-Type: application/json
+
+###
+GET http://localhost:3000/apiWebsocket/Usuario/conseguirUsuario/1 HTTP/1.1
+Content-Type: application/json
+
+###
+PUT http://localhost:3000/apiWebsocket/Usuario/modificarUsuario HTTP/1.1
+Content-Type: application/json
+
+{
+    "id_usuario":1,
+    "nombre":"Paolis",
+    "contrasena":2828,
+}
+
+###
+DELETE http://localhost:3000/apiWebsocket/Usuario/eliminarUsuario/1 HTTP/1.1
