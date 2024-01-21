@@ -1,7 +1,7 @@
 const Usuario = require('../Models/Usuario.model.js')
 
 const crearUsuario = async (req,res) =>{
-    const {nombre,contrasena,apellidoPaterno,apellidoMaterno} = req.body
+    const {nombre,contrasena} = req.body
 
     const permitido = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/;
 
@@ -24,8 +24,10 @@ const crearUsuario = async (req,res) =>{
         await newUsuario.save()
 
         res.json({
-            newUsuario
+            newUsuario,
+            message:"Usuario registrado"
         })
+
 
     }catch(error){
         res.status(500).json({error:"Error al crear al usuario",error})
@@ -45,15 +47,16 @@ const conseguirUsuarios = async (req, res) => {
 
 
 const conseguirUsuario = async(req,res)=>{
-    const id = req.params.id
-
+    const {nombre,contrasena} = req.query;
+    console.log(req.query);
     try{
         const usuario = await Usuario.findOne({
             where:{
-                id_usuario:id
+                nombre:nombre,
+                contrasena:contrasena
             }
         })
-        res.json(usuario)
+        res.json({usuario, message:"Usuario encontrado"})
     }catch(error){
         res.status(500).json({error:"Error al buscar el usuario"})
         console.log(error)
