@@ -1,13 +1,13 @@
 ###
-POST http://localhost:3000/apiWebsocket/Repartidor/crearRepartidor HTTP/1.1
+POST http://localhost:3000/Repartidor/crearRepartidor HTTP/1.1
 Content-Type: application/json
 
 {
-    "id_repartidor":1,
-    "nombre":"Michi"
+    "id_repartidor":2,
+    "nombre":"Piwa"
 }
 
 ###
-GET http://localhost:3000/apiWebsocket/Repartidor/conseguirRepartidor/1 HTTP/1.1
+GET http://localhost:3000/Repartidor/conseguirRepartidor/1 HTTP/1.1
 Content-Type: application/json
 
