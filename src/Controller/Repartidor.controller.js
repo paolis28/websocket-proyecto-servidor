@@ -1,44 +1,50 @@
-const Repartidor = require('../Models/Repartidor.model.js')
+const Repartidor = require("../Models/Repartidor.model.js");
 
-const crearRepartidor = async (req,res) => {
-    const {id_repartidor,nombre} = req.body
-
-    if(!id_repartidor,!nombre){
-        return res.status(400).json({error:"Todos los campos deben de llenarse"})
-    }
-
-    try{
-        await Repartidor.sync()
-        const newRepartidor = await Repartidor.create({
-            id_repartidor:id_repartidor,
-            nombre:nombre
-        })
-        res.json({newRepartidor})
-
-    }catch(error){
-        res.status(500).json({error:"Error al registrar repartidor", error})
-        console.log(error)
-    }
+let responseCliente = [];
+let repartidores = [];
+const obtenerReparNew =  (req, res) => {
+  
+  responseCliente.push(res);
+  console.log("ee");
+};
+function responseClient() {
+  for (res of responseCliente) {
+    res.status(201).json({
+      success: true,
+      repartidores: repartidores,
+    });
+  }
 }
 
-const conseguirRepartidor = async (req,res) =>{
-    const id = req.params.id
+const crearRepartidor = async (req, res) => {
+  const { nombre, direccion } = req.body;
+  console.log(req.body);
+  try {
+    const newRepartidor = await Repartidor.create({
+      nombre: nombre,
+      direccion: direccion,
+    });
+    repartidores.push(newRepartidor);
+    //responseClient();
+    res.json({ success: true, msg: "Repartidor registrado" });
+  } catch (error) {
+    res.status(500).json({ error: "Error al registrar repartidor", error });
+    console.log(error);
+  }
+};
 
-    try{
-        const repartidor = await Repartidor.findOne({
-            where:{
-                id_repartidor:id
-            }
-        })
-        res.json(repartidor)
-    }catch(error){
-        res.status(500).json({error:"Error al buscar el repartidor"})
-        console.log(error)
-    }
-}
+const conseguirRepartidor = async (req, res) => {
+  const repartidor = await Repartidor.findAll();
+  if (repartidor) {
+    repartidores.push(res);
+    res.status(200).json({ repartidor });
+  }
+};
+
+
 
 module.exports = {
-    crearRepartidor,
-    conseguirRepartidor
-}
-
+  crearRepartidor,
+  conseguirRepartidor,
+  obtenerReparNew,
+};

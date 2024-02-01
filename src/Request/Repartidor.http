@@ -1,13 +1,15 @@
 ###
 POST http://localhost:3000/Repartidor/crearRepartidor HTTP/1.1
 Content-Type: application/json
-
 {
-    "id_repartidor":2,
-    "nombre":"Piwa"
+    "nombre":"piwa",
+    "direccion":"Piwa"
 }
 
 ###
-GET http://localhost:3000/Repartidor/conseguirRepartidor/1 HTTP/1.1
+GET http://localhost:3000/Repartidor/conseguirRepartidor HTTP/1.1
 Content-Type: application/json
 
+###
+GET http://localhost:3000/Repartidor/ObtenerRapartidorNuevo HTTP/1.1
+Content-Type: application/json

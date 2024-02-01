@@ -2,11 +2,14 @@ const {DataTypes} = require("sequelize")
 const sequelize = require("../database.js")
 
 const Repartidor= sequelize.define('Repartidor',{
-    id_repartidor:{
+    id:{
         type:DataTypes.INTEGER,
-        primaryKey:true
+        autoIncrement:true,
+        primaryKey:true,
+    },nombre:{
+        type:DataTypes.STRING(50)
     },
-    nombre:{
+    direccion:{
         type:DataTypes.STRING(50),
         require:true
     }  

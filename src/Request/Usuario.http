@@ -32,3 +32,13 @@ Content-Type: application/json
 
 ###
 DELETE http://localhost:3000/Usuario/eliminarUsuario/1 HTTP/1.1
+
+
+###
+POST http://localhost:3000/agregarRepartidor HTTP/1.1
+Content-Type: application/json
+ 
+{
+    "nombre":"Paola",
+    "direccion":"eAlgo"
+}

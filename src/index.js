@@ -5,7 +5,9 @@ const cors = require('cors');
 
 // Habilita CORS
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin:"*"
+}));
 const Usuario = require('./Routes/Usuario.routes.js');
 const Paquete = require('./Routes/Paquete.routes.js');
 const Repartidor = require('./Routes/Repartidor.routes.js');
@@ -30,7 +32,7 @@ const io = require('socket.io')(server,{
 const NEW_CHAT_MESSAGE_EVENT="newChatMessage"
 
 io.on('connection',(socket)=>{
-    console.log("socket id is "+socket.id+ "connected")
+    //console.log("socket id is "+socket.id+ "connected")
 
     const {roomId} = socket.handshake.query
     socket.join(roomId)
@@ -68,33 +70,43 @@ app.post('/cambiar-estado-paquete/:nuevoEstado', (req, res) => {
 /**************************************************/
 
 /************** - LONG POLLING no es -**************/
-let repartidoresDisponibles = [];
-let clientesEsperando = [];
+// let responseCliente = [];
+// let repartidores =[];
 
-function actualizarRepartidoresDisponibles(nuevosRepartidores) {
-    repartidoresDisponibles = nuevosRepartidores;
-    while (clientesEsperando.length > 0) {
-        const cliente = clientesEsperando.shift();
-        cliente.res.json(repartidoresDisponibles);
-        console.log(clientesEsperando);
+// function responseClient(){
+//     for(res of responseCliente){
+//         res.status(201).json({
+//             success:true,
+//             repartidores:repartidores
+//         })
+//     }
+// }
+
+app.post('/agregarRepartidor',async(req,res)=>{
+    
+    try {
+        const repartidor = await repartidor.create(req.body);
+        if(repartidor){
+            repartidores.push(repartidor);
+            responseClient();
+        }
+    } catch (error) {
+        console.log("Error al agregar repartidor");
     }
-}
+})
 
-app.get('/repartidores-disponibles', (req, res) => {
-    if (repartidoresDisponibles.length > 0) {
-        res.json(repartidoresDisponibles);
-        console.log(repartidoresDisponibles);
-    } else {
-        clientesEsperando.push({ res });
-    }
-});
+app.get('/obtenerRepartidores', async (req,res)=>{
+    const repartidorNuevo = await repartidores.findOne();
+    repartidores.push(repartidorNuevo);
 
-app.post('/actualizar-repartidores-disponibles', (req, res) => {
-    const nuevosRepartidores = req.body.repartidores;
-    actualizarRepartidoresDisponibles(nuevosRepartidores);
-    res.send('Repartidores disponibles actualizados correctamente');
-    console.log(nuevosRepartidores);
-});
+    res.status(201).json({
+        repartidores:repartidores
+    })
+})
+
+// app.get('/ObtenerRapartidorNuevo', async(req,res)=>{
+//     responseCliente.push(res);
+// })
 
 /**************************************************/
 
